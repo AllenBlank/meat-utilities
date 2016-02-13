@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  order_id: MyString
+  order_num: MyString
+  date_needed: 2016-02-13
+  invoice_num: MyString
+  invoice_date: MyString
+  status_code: MyString
+  customer_code: MyString
+  total: 1.5
+  route_code: MyString
+  order_date: 2016-02-13
+
+two:
+  order_id: MyString
+  order_num: MyString
+  date_needed: 2016-02-13
+  invoice_num: MyString
+  invoice_date: MyString
+  status_code: MyString
+  customer_code: MyString
+  total: 1.5
+  route_code: MyString
+  order_date: 2016-02-13

@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Order:</strong>
+  <%= @ticket.order_id %>
+</p>
+
+<p>
+  <strong>Order num:</strong>
+  <%= @ticket.order_num %>
+</p>
+
+<p>
+  <strong>Date needed:</strong>
+  <%= @ticket.date_needed %>
+</p>
+
+<p>
+  <strong>Invoice num:</strong>
+  <%= @ticket.invoice_num %>
+</p>
+
+<p>
+  <strong>Invoice date:</strong>
+  <%= @ticket.invoice_date %>
+</p>
+
+<p>
+  <strong>Status code:</strong>
+  <%= @ticket.status_code %>
+</p>
+
+<p>
+  <strong>Customer code:</strong>
+  <%= @ticket.customer_code %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @ticket.total %>
+</p>
+
+<p>
+  <strong>Route code:</strong>
+  <%= @ticket.route_code %>
+</p>
+
+<p>
+  <strong>Order date:</strong>
+  <%= @ticket.order_date %>
+</p>
+
+<%= link_to 'Edit', edit_ticket_path(@ticket) %> |
+<%= link_to 'Back', tickets_path %>
