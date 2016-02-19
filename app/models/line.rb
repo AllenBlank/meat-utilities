@@ -17,4 +17,14 @@ class Line < ActiveRecord::Base
     lines
   end
   
+  def find_changes old_line
+    ["description", "uom", "quantity"].each do |attribute|
+        unless old_line[attribute] == self[attribute]
+            change = Change.create description: (attribute.capitalize + " changed from '" + old_line[attribute].to_s + "' to '" + self[attribute].to_s + ".'")
+            self.line_changes << change
+        end
+    end
+    old_line.changes.each {|change| change.update line_id: self.id }
+  end
+  
 end

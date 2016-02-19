@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-md-1">
+    <p><%= line.quantity.to_s %> <%= line.uom %></p>
+  </div>
+  <div class="col-md-11">
+    <p><%= line.description %></p>
+  </div>
+  <% line.line_changes.each do |change| %>
+    <%= render change %>
+  <% end %>
+</div>
+    

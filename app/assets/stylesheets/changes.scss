@@ -1,11 +1,9 @@
-// Place all the styles related to the Tickets controller here.
+// Place all the styles related to the lines controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 body {
-  h3.ticket-title {
+  .change {
     font-weight: bold;
+    color: #a50000;
   }
-  // span.ticket-details {
-  //   font-weight: bold;
-  // }
 }

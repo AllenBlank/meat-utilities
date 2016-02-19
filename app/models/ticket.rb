@@ -2,15 +2,8 @@ class Ticket < ActiveRecord::Base
     has_many :lines, dependent: :destroy
     has_many :ticket_changes, foreign_key: "ticket_id", class_name: "Change", dependent: :destroy
     belongs_to :list
+    after_create :add_lines
     
-    def line_changes
-        changes = []
-        self.lines.each do |line|
-            changes << line.line_changes unless line.line_changes.empty?
-        end
-        changes
-    end
-                   
     def self.build_tickets
         json = Fc.get_tickets
         tickets = []
@@ -29,33 +22,19 @@ class Ticket < ActiveRecord::Base
             ticket.save
             tickets << ticket
         end
-        tickets.each do |ticket|
-            lines = Line.build_lines ticket.order_id
-            lines.each do |line|
-                ticket.lines << line
-            end
-        end
         tickets
     end
     
-    def self.update_tickets
-        old_tickets = Ticket.all.map {|ticket| ticket.order_id}
-        new_tickets = build_tickets.map {|ticket| ticket.order_id}
-        
-        created_tickets = new_tickets - old_tickets
-        deleted_tickets = old_tickets - new_tickets
-        
-        persist_tickets = new_tickets - created_tickets
-        
-        
+    def add_lines
+        self.lines << Line.build_lines( self.order_id )
     end
     
     def find_changes old_ticket
         ticket_attributes = ["order_id", "order_num", "date_needed", "invoice_num", "invoice_date", "status_code", "customer_code", "total", "route_code", "order_date"]
         ticket_attributes.each do |k|
             unless self[k] == old_ticket[k]
-                change = change.create description:  ("The " + k + " field was changed.")
-                ticket.ticket_changes << change
+                change = Change.create description:  ("The " + k + " field was changed.")
+                self.ticket_changes << change
             end
         end
         
@@ -80,13 +59,10 @@ class Ticket < ActiveRecord::Base
         persist_lines.each do |line_id|
             newer_line = self.lines.find_by_line_id line_id
             older_line = old_ticket.lines.find_by_line_id line_id
-            ["description", "uom", "quantity"].each do |attribute|
-                unless older_line[attribute] == newer_line[attribute]
-                    change = Change.create description: (attribute.capitalize + " changed from '" + older_line[attribute] + "' to '" + newer_line[attribute] + ".'")
-                    newer_line.line_changes << change
-                end
-            end
+            newer_line.find_changes older_line
         end
+        
+        old_ticket.changes.each {|change| change.update ticket_id: self.id }
         
     end
   
