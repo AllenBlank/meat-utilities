@@ -9,6 +9,7 @@ gem 'pg'
 gem 'sdoc',                    '0.4.0', group: :doc
 gem 'mechanize'
 
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
@@ -24,4 +25,5 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'puma',           '2.11.1'
+  gem 'rack-wwwhisper', '~> 1.0'
 end
