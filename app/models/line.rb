@@ -1,6 +1,6 @@
 class Line < ActiveRecord::Base
   belongs_to :ticket
-  has_many :line_changes, foreign_key: "line_id", class_name: "Change", dependent: :destroy
+  has_many :warnings
   
   def self.build_lines order_id
     json = Fc.get_lines order_id
@@ -20,11 +20,11 @@ class Line < ActiveRecord::Base
   def find_changes old_line
     ["description", "uom", "quantity"].each do |attribute|
         unless old_line[attribute] == self[attribute]
-            change = Change.create description: (attribute.capitalize + " changed from '" + old_line[attribute].to_s + "' to '" + self[attribute].to_s + ".'")
-            self.line_changes << change
+            warning = Warning.create description: (attribute.capitalize + " changed from '" + old_line[attribute].to_s + "' to '" + self[attribute].to_s + ".'")
+            self.warnings << warning
         end
     end
-    old_line.changes.each {|change| change.update line_id: self.id }
+    old_line.warnings.each {|warning| warning.update line_id: self.id }
   end
   
 end

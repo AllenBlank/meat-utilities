@@ -1,6 +1,6 @@
 class Ticket < ActiveRecord::Base
     has_many :lines, dependent: :destroy
-    has_many :ticket_changes, foreign_key: "ticket_id", class_name: "Change", dependent: :destroy
+    has_many :warnings
     belongs_to :list
     after_create :add_lines
     
@@ -33,8 +33,8 @@ class Ticket < ActiveRecord::Base
         ticket_attributes = ["order_id", "order_num", "date_needed", "invoice_num", "invoice_date", "status_code", "customer_code", "total", "route_code", "order_date"]
         ticket_attributes.each do |k|
             unless self[k] == old_ticket[k]
-                change = Change.create description:  ("The " + k + " field was changed.")
-                self.ticket_changes << change
+                warning = Warning.create description:  ("The " + k + " field was changed.")
+                self.warnings << warning
             end
         end
         
@@ -44,15 +44,15 @@ class Ticket < ActiveRecord::Base
         created_lines = new_lines - old_lines
         created_lines.each do |line_id| 
             description = self.lines.find_by_line_id(line_id).description
-            change = Change.create description: ("ADDED: " + description)
-            self.ticket_changes << change
+            warning = Warning.create description: ("ADDED: " + description)
+            self.warnings << warning
         end
         
         deleted_lines = old_lines - new_lines
         deleted_lines.each do |line_id| 
             description = old_ticket.lines.find_by_line_id(line_id).description
-            change = Change.create description: ("REMOVED: " + description)
-            self.ticket_changes << change
+            warning = Warning.create description: ("REMOVED: " + description)
+            self.warnings << warning
         end        
         
         persist_lines = new_lines - created_lines
@@ -62,7 +62,7 @@ class Ticket < ActiveRecord::Base
             newer_line.find_changes older_line
         end
         
-        old_ticket.changes.each {|change| change.update ticket_id: self.id }
+        old_ticket.warnings.each {|warning| warning.update ticket_id: self.id }
         
     end
   

@@ -5,8 +5,8 @@
   <div class="col-md-11">
     <p><%= line.description %></p>
   </div>
-  <% line.line_changes.each do |change| %>
-    <%= render change %>
+  <% line.warnings.each do |warning| %>
+    <%= render warning %>
   <% end %>
 </div>
     

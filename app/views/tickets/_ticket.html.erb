@@ -5,8 +5,8 @@
       Status: <span class="ticket-details" ><%= ticket.status_code %></span> 
       Needed On: <span class="ticket-details" ><%= ticket.date_needed.strftime('%A').to_s %> (<%= ticket.date_needed.to_s %>)</span>
     </p>
-      <% ticket.ticket_changes.each do |change| %>
-        <%= render change %>
+      <% ticket.warnings.each do |warning| %>
+        <%= render warning %>
       <% end %>
       <% ticket.lines.each do |line| %>
         <%= render line %>

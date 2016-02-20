@@ -24,23 +24,6 @@ class Fc < ActiveRecord::Base
     @@agent.post(ENV["FC_AUTH"] + date_now )
   end
   
-  # Grab a list of all pick tickets from the server, and parse it into an array
-  def self.get_tickets
-    auth unless is_auth?
-    tickets = @@agent.post("md?m=rpc&n=PickTicketList&v=1&ncuid=" + date_now ).body
-    tickets = JSON.parse tickets
-    tickets = tickets["TTpickTicketList"]
-    tickets
-  end
-  
-  # Grab a list of line items for a particular order_id, and parse it into an array
-  def self.get_lines( order_id )
-    auth unless is_auth?
-    lines = @@agent.post("md?m=rpc&n=OrderLinesGetFillShip&v=1&ncuid=" + date_now + "&orderId=" + order_id.to_s).body
-    lines = JSON.parse lines
-    lines = lines["OutFillShipLines"]
-  end
-  
   def self.log_out
     @@agent.post("md?_=" + date_now + "&m=logout&ncuid=" + (date_now.to_i - 500 ).to_s)
   end
@@ -49,6 +32,32 @@ class Fc < ActiveRecord::Base
     return false unless @@agent
     body = JSON.parse( @@agent.get("md?m=hasSession").body )
     ( body["session"] == "true" ) ? true : false
+  end
+  
+  def self.request_json data
+    auth unless is_auth?
+    reply = @@agent.post( data ).body
+    JSON.parse reply
+  end
+  
+  # Grab a list of all pick tickets from the server, and parse it into an array
+  def self.get_tickets
+    tickets = request_json("md?m=rpc&n=PickTicketList&v=1&ncuid=" + date_now )
+    tickets["TTpickTicketList"]
+  end
+  
+  # Grab a list of line items for a particular order_id, and parse it into an array
+  def self.get_lines( order_id )
+    lines = request_json("md?m=rpc&n=OrderLinesGetFillShip&v=1&ncuid=" + date_now + "&orderId=" + order_id.to_s)
+    lines["OutFillShipLines"]
+  end
+  
+  def self.get_item_status ( item_id )
+    status = request_json("md?m=rpc&n=IclineDefaultGet&v=1&ncuid=" + date_now + "&itemId=" + item_id.to_s + "&icheadId=0&iclineId=null&source=Adj")
+    {
+      uom: status["OutICinfo"][0]["uom"],
+      warehouses: status["TTwarehouse"]
+    }
   end
   
 end

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'tomorrow' => 'lists#today_and_tomorrow', as: 'tomorrow'
   get 'today' => 'lists#today', as: 'today'
   get 'refresh' => 'lists#refresh', as: 'refresh'
-  get 'clear-changes' => 'changes#clear_changes', as: 'clear_changes'
+  get 'clear-warnings' => 'warnings#clear_warnings', as: 'clear_warnings'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
