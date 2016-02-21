@@ -8,5 +8,8 @@
   <% line.warnings.each do |warning| %>
     <%= render warning %>
   <% end %>
+  <% line.item.warnings.each do |warning| %>
+    <%= render warning %>
+  <% end %>
 </div>
     

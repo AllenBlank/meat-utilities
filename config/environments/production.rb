@@ -1,8 +1,8 @@
 Rails.application.configure do
-  
-  config.middleware.insert 0, "Rack::WWWhisper"
   # Settings specified here will take precedence over those in config/application.rb.
-
+  config.middleware.use '::Rack::Auth::Basic' do |u, p|
+    [u, p] == [ENV['BASIC_U'], ENV['BASIC_P']]
+  end
   # Code is not reloaded between requests.
   config.cache_classes = true
 

@@ -52,8 +52,9 @@ class Fc < ActiveRecord::Base
     lines["OutFillShipLines"]
   end
   
-  def self.get_item_status ( item_id )
+  def self.get_item_info item_id 
     status = request_json("md?m=rpc&n=IclineDefaultGet&v=1&ncuid=" + date_now + "&itemId=" + item_id.to_s + "&icheadId=0&iclineId=null&source=Adj")
+    return {} if status.nil?
     {
       uom: status["OutICinfo"][0]["uom"],
       warehouses: status["TTwarehouse"]

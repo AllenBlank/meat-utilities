@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160220203624) do
+ActiveRecord::Schema.define(version: 20160220221630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,21 @@ ActiveRecord::Schema.define(version: 20160220203624) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "items", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "description"
+    t.string   "uom"
+    t.float    "item_id"
+    t.integer  "bn_stock"
+    t.integer  "bn_avail"
+    t.integer  "ds_stock"
+    t.integer  "ds_avail"
+    t.integer  "line_id"
+  end
+
+  add_index "items", ["line_id"], name: "index_items_on_line_id", using: :btree
 
   create_table "lines", force: :cascade do |t|
     t.string   "description"
@@ -36,18 +51,6 @@ ActiveRecord::Schema.define(version: 20160220203624) do
   create_table "lists", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "statuses", force: :cascade do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "description"
-    t.string   "uom"
-    t.integer  "item_code"
-    t.integer  "bn_stock"
-    t.integer  "bn_avail"
-    t.integer  "ds_stock"
-    t.integer  "ds_avail"
   end
 
   create_table "tickets", force: :cascade do |t|
@@ -75,14 +78,18 @@ ActiveRecord::Schema.define(version: 20160220203624) do
     t.datetime "updated_at",  null: false
     t.string   "description"
     t.integer  "list_id"
+    t.integer  "item_id"
   end
 
+  add_index "warnings", ["item_id"], name: "index_warnings_on_item_id", using: :btree
   add_index "warnings", ["line_id"], name: "index_warnings_on_line_id", using: :btree
   add_index "warnings", ["list_id"], name: "index_warnings_on_list_id", using: :btree
   add_index "warnings", ["ticket_id"], name: "index_warnings_on_ticket_id", using: :btree
 
+  add_foreign_key "items", "lines"
   add_foreign_key "lines", "tickets"
   add_foreign_key "tickets", "lists"
+  add_foreign_key "warnings", "items"
   add_foreign_key "warnings", "lines"
   add_foreign_key "warnings", "lists"
   add_foreign_key "warnings", "tickets"

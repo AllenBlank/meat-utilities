@@ -1,6 +1,7 @@
 class Line < ActiveRecord::Base
   belongs_to :ticket
-  has_many :warnings
+  has_many :warnings, dependent: :destroy
+  has_one :item, dependent: :destroy
   
   def self.build_lines order_id
     json = Fc.get_lines order_id
@@ -12,6 +13,7 @@ class Line < ActiveRecord::Base
         line.quantity = j["qtyOrdered"]
         line.line_id = j["ordlineId"]
         line.save
+        line.item = Item.create item_id: j["itemId"], description: line.description
         lines << line
     end
     lines

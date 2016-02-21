@@ -1,7 +1,7 @@
 class List < ActiveRecord::Base
   has_many :tickets, dependent: :destroy
   has_many :lines, through: :tickets
-  has_many :warnings
+  has_many :warnings, dependent: :destroy
   after_create :add_tickets, :update_tickets
   
   def add_tickets

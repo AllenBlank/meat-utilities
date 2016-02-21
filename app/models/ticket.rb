@@ -1,6 +1,6 @@
 class Ticket < ActiveRecord::Base
     has_many :lines, dependent: :destroy
-    has_many :warnings
+    has_many :warnings, dependent: :destroy
     belongs_to :list
     after_create :add_lines
     
