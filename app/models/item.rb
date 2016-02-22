@@ -7,11 +7,11 @@ class Item < ActiveRecord::Base
     self.uom = status[:uom]
     status[:warehouses].each do |warehouse|
       if warehouse["warehouseCode"] == "BN"
-        self.bn_stock = warehouse["inStockQty"].to_i
-        self.bn_avail = warehouse["availableStock"].to_i
+        self.bn_stock = warehouse["inStockQty"].delete(",").to_i
+        self.bn_avail = warehouse["availableStock"].delete(",").to_i
       elsif warehouse["warehouseCode"] == "Dreisbac"
-        self.ds_stock = warehouse["inStockQty"].to_i
-        self.ds_avail = warehouse["availableStock"].to_i
+        self.ds_stock = warehouse["inStockQty"].delete(",").to_i
+        self.ds_avail = warehouse["availableStock"].delete(",").to_i
       end
     end
     self.save
