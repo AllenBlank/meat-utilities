@@ -2,8 +2,9 @@
   <div class="col-md-12">
     <h3 class="ticket-title"><%= ticket.customer_code %></h3>
     <p>
-      Status: <span class="ticket-details" ><%= ticket.status_code %></span> 
-      Needed On: <span class="ticket-details" ><%= ticket.date_needed.strftime('%A').to_s %> (<%= ticket.date_needed.to_s %>)</span>
+      Status: <span class="ticket-details" ><%= ticket.status_code %> </span>
+      Order Number: <span class="ticket-details" ><%= ticket.order_num %> </span>
+      Needed On: <span class="ticket-details" ><%= ticket.date_needed.strftime('%A').to_s %> (<%= ticket.date_needed.to_s %>) </span>
     </p>
       <% ticket.warnings.each do |warning| %>
         <%= render warning %>
