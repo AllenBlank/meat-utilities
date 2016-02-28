@@ -5,5 +5,9 @@ body {
   .warning {
     font-weight: bold;
     color: #a50000;
+    a, a:hover {
+      color: #a50000;
+      background-color: transparent;
+    }
   }
 }

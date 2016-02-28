@@ -1,15 +1,13 @@
 <div class="row">
-  <div class="col-xs-1">
-    <p><%= line.quantity.to_s %> <%= line.uom %></p>
+  <div class="col-xs-12">
+    <p class="line-text <%= " frozen " if line.item.is_frozen?%>"><%= line.quantity.to_s %> <%= line.uom %> of <%= line.description %></p>
   </div>
-  <div class="col-xs-11">
-    <p><%= line.description %></p>
-  </div>
-  <% line.warnings.each do |warning| %>
-    <%= render warning %>
-  <% end %>
-  <% line.item.warnings.each do |warning| %>
-    <%= render warning %>
-  <% end %>
 </div>
-    
+
+<% line.warnings.each do |warning| %>
+  <%= render warning %>
+<% end %>
+
+<% line.item.warnings.each do |warning| %>
+  <%= render warning %>
+<% end %>

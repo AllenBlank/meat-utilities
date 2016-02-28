@@ -29,4 +29,9 @@ class Item < ActiveRecord::Base
       end
     end
   end
+  
+  def is_frozen?
+    ( self.description[2] == "1" || description["FROZEN"] ) ? true : false
+  end
+  
 end
