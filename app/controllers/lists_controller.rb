@@ -15,6 +15,11 @@ class ListsController < ApplicationController
   def today_and_tomorrow_lines
     @tickets = todays_tickets + tomorrows_tickets
     @lines = Line.where( ticket: @tickets ).order :description
+    frozen, fresh = [], []
+    @lines.each do |line|
+      line.item.is_frozen? ? frozen << line : fresh << line
+    end
+    @lines = fresh + frozen
     render "just-lines"
   end
   
