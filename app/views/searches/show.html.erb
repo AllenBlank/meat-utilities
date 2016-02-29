@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h3><%= @item.description %></h3>
+    <p>BN Stock: <%= @item.bn_stock.to_s + " " + @item.uom %></p>
+    <p>BN Available: <%= @item.bn_avail.to_s + " " + @item.uom %></p>
+    <p>DS Stock: <%= @item.ds_stock.to_s + " " + @item.uom %></p>
+    <p>DS Available: <%= @item.ds_avail.to_s + " " + @item.uom %></p>
+  </div>
+</div>
+
+<% @item.warnings.each do |warning| %>
+  <%= render warning %>
+<% end %>

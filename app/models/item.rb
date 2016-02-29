@@ -1,6 +1,13 @@
 class Item < ActiveRecord::Base
   has_many :warnings, dependent: :destroy
   after_create :get_info, :generate_warnings
+  
+  def self.create_from_description description
+    data = Fc.get_item_by_description description
+    item = Item.new data
+    item.save
+    item
+  end
 
   def get_info
     status = Fc.get_item_info self.item_id.floor

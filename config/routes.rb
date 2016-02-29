@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -14,6 +15,7 @@ Rails.application.routes.draw do
   get 'clear-warnings' => 'warnings#clear_warnings', as: 'clear_warnings'
   #delete 'warnings/:id(.:format)' => 'warnings#destroy', as: 'delete_warning'
   resources :warnings, only: [:destroy]
+  resources :searches, only: [:new, :create, :show]
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

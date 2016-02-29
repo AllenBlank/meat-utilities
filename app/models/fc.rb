@@ -52,12 +52,21 @@ class Fc < ActiveRecord::Base
     lines["OutFillShipLines"]
   end
   
-  def self.get_item_info item_id 
+  def self.get_item_info( item_id )
     status = request_json("md?m=rpc&n=IclineDefaultGet&v=1&ncuid=" + date_now + "&itemId=" + item_id.to_s + "&icheadId=0&iclineId=null&source=Adj")
     return {} if status.nil?
     {
       uom: status["OutICinfo"][0]["uom"],
       warehouses: status["TTwarehouse"]
+    }
+  end
+  
+  def self.get_item_by_description( description )
+    status = request_json("md?m=rpc&n=ItemSearch&v=1&ncuid=" + date_now + "&file=file&pattern=" + description + "&searchSelect=null&maxRows=2")
+    item_info = status["TTitem"][0]
+    {
+      item_id: item_info["itemId"],
+      description: item_info["itemCode"] + " - " + item_info["descrip"]
     }
   end
   

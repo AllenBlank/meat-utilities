@@ -1,0 +1,9 @@
+<%= form_for(@search) do |f| %>
+  <div class="field">
+    <%= f.label "Search Items" %><br>
+    <%= f.text_field :term, :id => 'search'%>
+  </div>
+  <div class="actions">
+    <%= f.submit value: "Submit" %>
+  </div>
+<% end %>

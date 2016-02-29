@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160220221630) do
+ActiveRecord::Schema.define(version: 20160229005736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,15 +22,15 @@ ActiveRecord::Schema.define(version: 20160220221630) do
   end
 
   create_table "items", force: :cascade do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.string   "description"
     t.string   "uom"
     t.float    "item_id"
-    t.integer  "bn_stock"
-    t.integer  "bn_avail"
-    t.integer  "ds_stock"
-    t.integer  "ds_avail"
+    t.integer  "bn_stock",    default: 0
+    t.integer  "bn_avail",    default: 0
+    t.integer  "ds_stock",    default: 0
+    t.integer  "ds_avail",    default: 0
     t.integer  "line_id"
   end
 
@@ -49,6 +49,12 @@ ActiveRecord::Schema.define(version: 20160220221630) do
   add_index "lines", ["ticket_id"], name: "index_lines_on_ticket_id", using: :btree
 
   create_table "lists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "searches", force: :cascade do |t|
+    t.string   "term"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
