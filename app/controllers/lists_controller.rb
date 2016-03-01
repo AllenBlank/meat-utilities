@@ -39,12 +39,20 @@ class ListsController < ApplicationController
       @list = List.first
     end
     
+    def tickets_on date
+      List.first.tickets
+        .where( date_needed: date )
+        .where.not( status_code: "I" )
+        .where.not( status_code: "R" )
+        .order( :customer_code )
+    end
+    
     def todays_tickets
-      List.first.tickets.where( date_needed: Time.zone.today ).where.not( status_code: "I" ).order :date_needed, :customer_code
+      tickets_on Time.zone.today
     end
     
     def tomorrows_tickets
-      List.first.tickets.where( date_needed: Time.zone.tomorrow ).where.not( status_code: "I" ).order :date_needed, :customer_code
+      tickets_on Time.zone.tomorrow
     end
     
 end
